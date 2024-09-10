@@ -1,17 +1,26 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import Header from './components/Header.vue';
+<script>
 import Footer from './components/Footer.vue';
-import LoginForm from './components/auth/LoginForm.vue';
+import Header from './components/Header.vue';
+
+export default {
+  name: 'App',
+  components: {
+    Header,
+    Footer
+  }
+}
 </script>
 
 <template>
-  <Header/>
-  <Footer/>
-
-  <RouterView />
+  
+    <Header/>
+    <router-view />
+    <Footer />
+ 
 </template>
 
-<style scoped>
+
+
+<style>
 
 </style>
