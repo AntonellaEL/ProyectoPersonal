@@ -1,12 +1,14 @@
 <script>
 import Footer from './components/Footer.vue';
 import Header from './components/Header.vue';
+import ComponentHome from './components/ComponentHome.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Footer
+    Footer,
+    ComponentHome
   }
 }
 </script>
@@ -14,6 +16,9 @@ export default {
 <template>
   
     <Header/>
+
+  <ComponentHome/>
+
     <router-view />
     <Footer />
  
@@ -22,5 +27,6 @@ export default {
 
 
 <style>
+
 
 </style>
