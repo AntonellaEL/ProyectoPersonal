@@ -11,6 +11,7 @@ export default {
   </header>
 </template>
 
+
 <style scoped>
 .header {
   background-color: #b2b2b2;
@@ -18,7 +19,7 @@ export default {
   align-items: center;
   justify-content: start;
   padding: 8px;
-  height: 100px;
+  height: 80px;
   width: 100%;
   position: fixed;
   top: 0;
@@ -37,6 +38,6 @@ h2 {
   font-size: 80px;
   margin: 0;
   color: black;
-  font-family: jomhuria
+  font-family: jomhuria;
 }
 </style>

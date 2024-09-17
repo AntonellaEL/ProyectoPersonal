@@ -3,7 +3,7 @@ export default {
   name: "Footer",
   methods: {
     goToLogin() {
-      this.$router.push('/admin'); 
+      this.$router.push('/login'); 
     }
   }
 };
