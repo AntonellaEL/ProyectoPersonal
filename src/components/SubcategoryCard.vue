@@ -5,16 +5,20 @@ export default {
       type: String,
       required: true,
     },
+    imagen: {
+      type: String,
+      required: true,
+    },
   },
 };
 </script>
 
 <template>
-    <div class="subcategory-card" @click="$emit('click')">
-      <img :src="imagen" alt="Imagen de la SUBCATEGORIA" class="category-image" />
-      <p>{{ subcategoria }}</p>
-    </div>
-  </template>
+  <div class="subcategory-card" @click="$emit('click')">
+    <img :src="imagen" alt="Imagen de la SUBCATEGORIA" class="category-image" />
+    <p>{{ subcategoria }}</p>
+  </div>
+</template>
   
   <style scoped>
  .subcategory-card-container {

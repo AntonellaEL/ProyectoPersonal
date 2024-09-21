@@ -1,23 +1,26 @@
-<template>
-  <div class="product-card">
-    <img :src="`/images/${producto.img}`" alt="Imagen del producto" class="product-image" />
-    <h3>{{ producto.nombre }}</h3>
-    <p>Precio: {{ producto.precio }}€</p>
-    <p>Descripción: {{ producto.descripcion }}</p>
-    <p>Categoria: {{ producto.categoria }}</p>
-    <p>Subcategoria: {{ producto.subcategoria }}</p>
-    <p>Pasillo: {{ producto.pasillo }}</p>
-    <p>Estanteria: {{ producto.estanteria }}</p>
-  </div>
-</template>
-
 <script>
 export default {
   props: {
     producto: Object
+  },
+  methods: {
+    selectProduct() {
+      this.$emit('click', { categoria: this.producto.categoria, subcategoria: this.producto.subcategoria });
+    }
   }
 }
 </script>
+
+<template>
+  <div class="product-card" @click="selectProduct">
+    <img :src="`/images/${producto.img}`" alt="Imagen del producto" class="product-image" />
+    <h3>{{ producto.nombre }}</h3>
+    <p>Precio: {{ producto.precio }}€</p>
+    <p>Descripción: {{ producto.descripcion }}</p>
+    <p>Pasillo: {{ producto.pasillo }}</p>
+    <p>Estanteria: {{ producto.estanteria }}</p>
+  </div>
+</template>
 
 <style scoped>
 .product-card {
@@ -29,7 +32,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  aspect-ratio: 1 / 1; /* Mantiene las tarjetas cuadradas */
+  aspect-ratio: 1 / 1; 
   overflow: hidden;
   min-height: 200px;
 }

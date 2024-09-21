@@ -21,35 +21,23 @@ export default {
       this.subcategorias = await response.json();
     },
     selectSubcategory(subcategoria) {
-      this.$router.push({ name: 'category', params: { category: this.category, subcategory: subcategoria } });
+      this.$router.push({ name: 'subcategory-products', params: { category: this.category, subcategory: subcategoria } });
     },
   },
 };
 </script>
 
 <template>
-    <div class="subcategory-view">
-      <h2>Subcategorías de {{ category }}</h2>
-      <div class="card-container">
-        <SubcategoryCard
-          v-for="(subcategoria, index) in subcategorias"
-          :key="index"
-          :subcategoria="subcategoria"
-          @click="selectSubcategory(subcategoria)"
-        />
-      </div>
+  <div class="subcategory-view">
+    <h2>Subcategorías de {{ category }}</h2>
+    <div class="card-container">
+      <SubcategoryCard
+        v-for="(subcategoria, index) in subcategorias"
+        :key="index"
+        :subcategoria="subcategoria"
+        @click="selectSubcategory(subcategoria)"
+      />
     </div>
-  </template>
-  
-
-  
-  <style scoped>
-  .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-}
-  </style>
-  
-  
+  </div>
+</template>
+<style></style>

@@ -22,8 +22,14 @@ export default {
     this.category = this.$route.params.category; // Obtener la categoría desde la ruta
   },
   methods: {
-    selectCategory(categoria) {
-      this.$router.push({ name: 'subcategory', params: { category: categoria } });
+    selectProduct(producto) {
+      this.$router.push({
+        name: 'productsBySubcategory',
+        params: {
+          category: producto.categoria,
+          subcategory: producto.subcategoria
+        }
+      });
     },
   },
 };
@@ -37,11 +43,11 @@ export default {
         v-for="(producto, index) in filteredProducts"
         :key="index"
         :producto="producto"
+        @click="selectProduct(producto)"
       />
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .card-container {
