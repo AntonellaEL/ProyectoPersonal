@@ -1,11 +1,7 @@
 <script>
 export default {
   props: {
-    categoria: {
-      type: String,
-      required: true,
-    },
-    imagen: {
+    subcategoria: {
       type: String,
       required: true,
     },
@@ -14,24 +10,24 @@ export default {
 </script>
 
 <template>
-    <div class="category-card" @click="$emit('click')">
-      <img :src="imagen" alt="Imagen de la categoría" class="category-image" />
-      <p>{{ categoria }}</p>
+    <div class="subcategory-card" @click="$emit('click')">
+      <img :src="imagen" alt="Imagen de la SUBCATEGORIA" class="category-image" />
+      <p>{{ subcategoria }}</p>
     </div>
   </template>
   
-  <style >
-  .category-card-container {
+  <style scoped>
+ .subcategory-card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between; 
     padding: 0; 
     margin: 0; 
-    width: 100%;
+    width: 100%; 
     box-sizing: border-box;
   }
   
-  .category-card {
+  .subcategory-card {
     color: black;
     font-size: 2vh;
     border: 1px solid #ccc;
@@ -45,32 +41,23 @@ export default {
     box-sizing: border-box;
   }
   
-  .category-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-  
   
   @media (max-width: 1024px) {
-    .category-card {
+    .subcategory-card {
       flex: 1 1 calc(50% - 10px); 
     }
   }
   
-  
   @media (max-width: 768px) {
-    .category-card {
+    .subcategory-card {
       flex: 1 1 calc(100% - 10px); 
     }
   }
   
   
-
+ 
   @media (max-width: 480px) {
-    .category-card {
+    .subcategory-card {
       flex: 1 1 calc(100% - 10px);
     }
   }

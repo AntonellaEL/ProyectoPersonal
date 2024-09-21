@@ -13,9 +13,7 @@ export default {
   computed: {
     uniqueCategories() {
       const categorias = this.productos.map(producto => producto.categoria);
-      const unique = [...new Set(categorias)];
-      console.log("Categorías únicas:", unique);
-      return unique;
+      return [...new Set(categorias)];
     },
   },
   methods: {
@@ -23,17 +21,16 @@ export default {
       try {
         const response = await fetch('http://localhost:8080/api/v1/productos');
         this.productos = await response.json();
-        console.log("Productos:", this.productos);
       } catch (error) {
         console.error("Error al obtener los productos:", error);
       }
     },
     getCategoryImage(categoria) {
       const producto = this.productos.find(p => p.categoria === categoria);
-      return producto ? producto.img : 'ruta/a/imagen/por/defecto.png'; // Imagen por defecto si no se encuentra
+      return producto ? producto.img : 'ruta/a/imagen/por/defecto.png'; 
     },
     selectCategory(categoria) {
-      this.$router.push({ name: 'category', params: { category: categoria } });
+      this.$router.push({ name: 'subcategory', params: { category: categoria } });
     },
   },
   mounted() {
@@ -41,6 +38,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="products-view">
     <h1>Categorías de Productos</h1>
