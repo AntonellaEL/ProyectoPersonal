@@ -3,6 +3,7 @@ import ProductsView from '@/views/ProductsView.vue';
 import CategoryView from '@/views/CategoryView.vue';
 import SubcategoryView from '@/views/SubcategoryView.vue';
 import SubcategoryProductsView from '@/views/SubcategoryProductsView.vue';
+import SearchResults from '@/components/SearchResults.vue';
 
 const routes = [
   {
@@ -23,7 +24,13 @@ const routes = [
   {
     path: '/category/:category/subcategory/:subcategory',
     name: 'subcategory-products',
-    component: SubcategoryProductsView, // Nueva ruta
+    component: SubcategoryProductsView, 
+  },
+  {
+    path: '/search',
+    name: 'searchResults',
+    component: SearchResults,
+    props: (route) => ({ searchQuery: route.query.name }), 
   },
 ];
 

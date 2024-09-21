@@ -40,4 +40,10 @@ export default {
     </div>
   </div>
 </template>
-<style></style>
+<style>
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}</style>
