@@ -1,24 +1,58 @@
 <script>
+import { useRouter } from 'vue-router'; 
+import { useAuthStore } from '@/stores/auth'; 
+
 export default {
   name: "Footer",
-  methods: {
-    goToLogin() {
-      this.$router.push('/login'); 
+  setup() {
+    const router = useRouter();
+    const authStore = useAuthStore(); 
+
+    function goToLogin() {
+      router.push('/login'); 
     }
+
+    function logout() {
+      authStore.user.isAuthenticated = false;
+      authStore.user.username = '';
+      authStore.user.password = '';
+
+      router.push('/');
+    }
+
+    return {
+      goToLogin,
+      logout,
+      authStore, 
+    };
   }
 };
 </script>
+
 <template>
   <footer class="footer">
     <div class="footer-content">
       <img src="./icons/Copyright.svg" alt="Copyright" class="logo" />
       <span>FiB</span>
     </div>
-    <img src="./icons/User.svg" alt="User" class="User" @click="goToLogin">
+    <div class="user-actions">
+      <img 
+        src="./icons/Login.svg" 
+        alt="Login" 
+        @click="goToLogin" 
+        class="User" 
+        v-if="!authStore.user.isAuthenticated"
+      > 
+      <img 
+        src="./icons/OutLogin.svg" 
+        alt="Logout" 
+        @click="logout" 
+        class="User" 
+        v-if="authStore.user.isAuthenticated"
+      >
+    </div>
   </footer>
 </template>
-
-
 
 <style scoped>
 .footer {
@@ -52,5 +86,9 @@ span {
   font-size: 18px;
   font-weight: bold;
   color: black;
+}
+
+.user-actions {
+  display: flex; 
 }
 </style>
