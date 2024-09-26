@@ -1,3 +1,18 @@
+<script>
+import ProductList from '@/components/ProductList.vue';
+
+export default {
+  components: {
+    ProductList,
+  },
+};
+</script>
+
 <template>
-    <h1>Hola admin</h1>
+  <div>
+    <ProductList />
+  </div>
 </template>
+
+<style >
+</style>
