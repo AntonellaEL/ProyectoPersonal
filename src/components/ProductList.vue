@@ -68,9 +68,10 @@ export default {
 </script>
 
 <template>
+ 
   <div class="container mt-5">
     <h2 class="text-center mb-4">Lista de Productos</h2>
-
+ 
     <div class="row mb-3">
       <div class="col-12 col-md-6">
         <label for="categorySelect">Selecciona una Categoría:</label>

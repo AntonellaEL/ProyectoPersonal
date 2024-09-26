@@ -1,18 +1,25 @@
 <script>
 import ProductList from '@/components/ProductList.vue';
+import ProductFormModal from '@/components/ProductFormModal.vue'; 
 
 export default {
   components: {
     ProductList,
+    ProductFormModal,
   },
 };
 </script>
 
 <template>
-  <div>
+  <div class="admin-view">
+    <ProductFormModal /> 
+
     <ProductList />
   </div>
 </template>
 
-<style >
+<style scoped>
+.admin-view {
+  padding: 20px;
+}
 </style>
