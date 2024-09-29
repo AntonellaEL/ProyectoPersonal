@@ -23,7 +23,7 @@
                 <input
                   type="text"
                   id="nombre"
-                  v-model="product.nombre"
+                  v-model="producto.nombre"
                   class="form-control"
                   required
                 />
@@ -33,7 +33,7 @@
                 <input
                   type="number"
                   id="precio"
-                  v-model="product.precio"
+                  v-model="producto.precio"
                   class="form-control"
                   required
                 />
@@ -42,7 +42,7 @@
                 <label for="descripcion" class="form-label">Descripción</label>
                 <textarea
                   id="descripcion"
-                  v-model="product.descripcion"
+                  v-model="producto.descripcion"
                   class="form-control"
                   required
                 ></textarea>
@@ -52,7 +52,7 @@
                 <input
                   type="text"
                   id="categoria"
-                  v-model="product.categoria"
+                  v-model="producto.categoria"
                   class="form-control"
                   required
                 />
@@ -62,7 +62,7 @@
                 <input
                   type="text"
                   id="subcategoria"
-                  v-model="product.subcategoria"
+                  v-model="producto.subcategoria"
                   class="form-control"
                   required
                 />
@@ -72,7 +72,7 @@
                 <input
                   type="text"
                   id="pasillo"
-                  v-model="product.pasillo"
+                  v-model="producto.pasillo"
                   class="form-control"
                   required
                 />
@@ -82,7 +82,7 @@
                 <input
                   type="text"
                   id="estanteria"
-                  v-model="product.estanteria"
+                  v-model="producto.estanteria"
                   class="form-control"
                   required
                 />
@@ -92,7 +92,7 @@
                 <input
                   type="text"
                   id="img"
-                  v-model="product.img"
+                  v-model="producto.img"
                   class="form-control"
                   required
                 />
@@ -107,11 +107,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       showModal: false,
-      product: {
+      producto: {
         nombre: '',
         precio: 0,
         descripcion: '',
@@ -121,13 +123,42 @@ export default {
         estanteria: '',
         img: '',
       },
+      mensaje: '',
     };
   },
   methods: {
-    submitForm() {
-      console.log('Producto a guardar:', this.product);
-      this.closeModal();
-      // Aquí puedes agregar la lógica para guardar el producto
+    async submitForm() {
+      try {
+        const response = await axios.post('http://localhost:8080/api/v1/productos', this.producto, {
+          withCredentials: true 
+        });
+
+        this.mensaje = 'Producto guardado exitosamente!';
+        this.closeModal();
+
+        
+        this.producto = {
+          nombre: '',
+          precio: 0,
+          descripcion: '',
+          categoria: '',
+          subcategoria: '',
+          pasillo: '',
+          estanteria: '',
+          img: '',
+        };
+
+        console.log('Producto guardado:', response.data);
+      } catch (error) {
+        console.error('Error al guardar el producto:', error);
+        if (error.response) {
+          console.error('Error del servidor:', error.response.data);
+          this.mensaje = `Error: ${error.response.data.message || 'Error al guardar el producto. Intenta de nuevo.'}`;
+        } else {
+          console.error('Error de configuración:', error.message);
+          this.mensaje = 'Error de configuración. Por favor, verifica tu conexión.';
+        }
+      }
     },
     closeModal() {
       this.showModal = false;
@@ -138,30 +169,10 @@ export default {
 
 <style scoped>
 .modal {
-  max-width: 100%; /* Asegura que el modal no exceda el ancho de la pantalla */
-  margin: 0 auto; /* Centra el modal */
+  max-width: 100%;
+  margin: 0 auto;
 }
-
 .modal-content {
-  width: 100%; /* Asegura que el contenido del modal ocupe todo el ancho */
-}
-
-/* Estilo del botón */
-.btn-light {
-  padding: 0; /* Elimina padding para que el botón sea cuadrado */
-}
-
-@media (max-width: 576px) {
-  .btn-light {
-    width: 60px; /* Ajusta el tamaño del botón en móviles */
-    height: 60px;
-    top: 85px; /* Espaciado desde la parte superior (debajo del header) */
-    right: 30px; /* Espaciado desde el lado derecho */
-  }
-
-  .modal-lg {
-    max-width: 95%; /* Ajusta el ancho del modal en pantallas pequeñas */
-    margin: auto; /* Asegura que el modal esté centrado */
-  }
+  width: 100%;
 }
 </style>
