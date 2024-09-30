@@ -1,33 +1,3 @@
-<template>
-  <div>
-    <button class="button" @click="openModal">
-      <div class="trash">
-        <div class="top">
-          <div class="paper"></div>
-        </div>
-        <div class="box"></div>
-        <div class="check" v-if="deleted">
-          <svg viewBox="0 0 8 6">
-            <polyline points="1 3.4 2.71428571 5 7 1"></polyline>
-          </svg>
-        </div>
-      </div>
-      <img src="../components/icons/Delete.svg" alt="Eliminar" class="delete-icon" />
-    </button>
-
-    <div v-if="showModal" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <h3>Confirmar Eliminación</h3>
-        <p>¿Estás seguro de que deseas eliminar este producto?</p>
-        <div class="button-group">
-          <button @click="confirmDelete">Sí, eliminar</button>
-          <button @click="closeModal">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 import axios from 'axios';
 
@@ -75,6 +45,38 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    <button class="button" @click="openModal">
+      <div class="trash">
+        <div class="top">
+          <div class="paper"></div>
+        </div>
+        <div class="box"></div>
+        <div class="check" v-if="deleted">
+          <svg viewBox="0 0 8 6">
+            <polyline points="1 3.4 2.71428571 5 7 1"></polyline>
+          </svg>
+        </div>
+      </div>
+      <img src="../components/icons/Delete.svg" alt="Eliminar" class="delete-icon" />
+    </button>
+
+    <div v-if="showModal" class="modal-overlay" @click="closeModal">
+      <div class="modal-content" @click.stop>
+        <h3>Confirmar Eliminación</h3>
+        <p>¿Estás seguro de que deseas eliminar este producto?</p>
+        <div class="button-group">
+          <button @click="confirmDelete">Sí, eliminar</button>
+          <button @click="closeModal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
 
 <style scoped>
 
