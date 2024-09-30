@@ -1,65 +1,33 @@
 <script>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useProductStore } from '@/stores/productStore';
+import Delete from '@/components/Delete.vue'; 
 
 export default {
+  components: {
+    Delete,
+  },
   setup() {
     const store = useProductStore();
     const filteredProducts = ref([]);
-    const selectedCategory = ref('');
-    const selectedSubcategory = ref('');
+    const mensaje = ref('');
 
     const fetchProducts = async () => {
       await store.loadProducts();
-      filteredProducts.value = store.products; 
-    };
-
-    const uniqueCategories = computed(() => {
-      return [...new Set(store.products.map((product) => product.categoria))];
-    });
-
-    const filteredSubcategories = computed(() => {
-      if (!selectedCategory.value) return [];
-      return [
-        ...new Set(
-          store.products
-            .filter((product) => product.categoria === selectedCategory.value)
-            .map((product) => product.subcategoria)
-        ),
-      ];
-    });
-
-    const filterProducts = () => {
-      if (!selectedCategory.value) {
-        filteredProducts.value = store.products;
-      } else if (!selectedSubcategory.value) {
-        filteredProducts.value = store.products.filter(
-          (product) => product.categoria === selectedCategory.value
-        );
-      } else {
-        filteredProducts.value = store.products.filter(
-          (product) =>
-            product.categoria === selectedCategory.value &&
-            product.subcategoria === selectedSubcategory.value
-        );
-      }
-    };
-
-    watch([selectedCategory, selectedSubcategory], filterProducts);
-
-    const loadProducts = () => {
-      fetchProducts();
+      filteredProducts.value = store.products;
     };
 
     onMounted(fetchProducts);
 
+    const handleProductDeleted = (id) => {
+      filteredProducts.value = filteredProducts.value.filter(product => product.id !== id);
+      mensaje.value = 'Producto eliminado exitosamente!';
+    };
+
     return {
       filteredProducts,
-      selectedCategory,
-      selectedSubcategory,
-      uniqueCategories,
-      filteredSubcategories,
-      loadProducts, 
+      handleProductDeleted,
+      mensaje,
     };
   },
 };
@@ -68,42 +36,6 @@ export default {
 <template>
   <div class="container mt-5">
     <h2 class="text-center mb-4">Lista de Productos</h2>
-
-    <div class="row mb-3">
-      <div class="col-12 col-md-6">
-        <label for="categorySelect">Selecciona una Categoría:</label>
-        <select
-          id="categorySelect"
-          v-model="selectedCategory"
-          @change="filterProducts"
-          class="form-control"
-        >
-          <option value="">Todas las Categorías</option>
-          <option v-for="category in uniqueCategories" :key="category" :value="category">
-            {{ category }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-12 col-md-6" v-if="filteredSubcategories.length > 0">
-        <label for="subcategorySelect">Selecciona una Subcategoría:</label>
-        <select
-          id="subcategorySelect"
-          v-model="selectedSubcategory"
-          @change="filterProducts"
-          class="form-control"
-        >
-          <option value="">Todas las Subcategorías</option>
-          <option
-            v-for="subcategory in filteredSubcategories"
-            :key="subcategory"
-            :value="subcategory"
-          >
-            {{ subcategory }}
-          </option>
-        </select>
-      </div>
-    </div>
 
     <div class="table-responsive">
       <table class="table table-bordered table-hover mt-4">
@@ -116,10 +48,11 @@ export default {
             <th>Subcategoría</th>
             <th>Pasillo</th>
             <th>Estantería</th>
+            <th>Borrar</th> 
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in filteredProducts" :key="product.nombre" class="table-row">
+          <tr v-for="product in filteredProducts" :key="product.id" class="table-row">
             <td>{{ product.nombre }}</td>
             <td>{{ product.precio.toFixed(2) }} €</td>
             <td>{{ product.descripcion }}</td>
@@ -127,10 +60,15 @@ export default {
             <td>{{ product.subcategoria }}</td>
             <td>{{ product.pasillo }}</td>
             <td>{{ product.estanteria }}</td>
+            <td>
+              <Delete :productId="product.id" @producto-eliminado="handleProductDeleted" />
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <div v-if="mensaje" class="alert alert-info">{{ mensaje }}</div>
   </div>
 </template>
 
