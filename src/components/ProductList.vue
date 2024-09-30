@@ -2,10 +2,12 @@
 import { ref, onMounted } from 'vue';
 import { useProductStore } from '@/stores/productStore';
 import Delete from '@/components/Delete.vue'; 
+import EditButton from '@/components/Edit.vue'; 
 
 export default {
   components: {
     Delete,
+    EditButton, 
   },
   setup() {
     const store = useProductStore();
@@ -24,9 +26,15 @@ export default {
       mensaje.value = 'Producto eliminado exitosamente!';
     };
 
+    const handleProductEdited = (id) => {
+      mensaje.value = 'Producto editado exitosamente!';
+      fetchProducts(); 
+    };
+
     return {
       filteredProducts,
       handleProductDeleted,
+      handleProductEdited, 
       mensaje,
     };
   },
@@ -48,7 +56,8 @@ export default {
             <th>Subcategoría</th>
             <th>Pasillo</th>
             <th>Estantería</th>
-            <th>Borrar</th> 
+            <th>Editar</th>
+            <th>Borrar</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +70,9 @@ export default {
             <td>{{ product.pasillo }}</td>
             <td>{{ product.estanteria }}</td>
             <td>
+              <EditButton :productId="product.id" @producto-editado="handleProductEdited" />
+            </td>
+            <td>
               <Delete :productId="product.id" @producto-eliminado="handleProductDeleted" />
             </td>
           </tr>
@@ -71,7 +83,6 @@ export default {
     <div v-if="mensaje" class="alert alert-info">{{ mensaje }}</div>
   </div>
 </template>
-
 
 <style scoped>
 .table {
