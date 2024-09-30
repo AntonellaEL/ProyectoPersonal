@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useProductStore } from '@/stores/productStore';
 
 export default {
@@ -19,7 +19,7 @@ export default {
     });
 
     const filteredSubcategories = computed(() => {
-      if (!selectedCategory.value) return []; 
+      if (!selectedCategory.value) return [];
       return [
         ...new Set(
           store.products
@@ -29,20 +29,13 @@ export default {
       ];
     });
 
-    const filterByCategory = () => {
-      selectedSubcategory.value = ''; 
+    const filterProducts = () => {
       if (!selectedCategory.value) {
-        filteredProducts.value = store.products; 
-      } else {
+        filteredProducts.value = store.products;
+      } else if (!selectedSubcategory.value) {
         filteredProducts.value = store.products.filter(
           (product) => product.categoria === selectedCategory.value
         );
-      }
-    };
-
-    const filterBySubcategory = () => {
-      if (!selectedSubcategory.value) {
-        filterByCategory(); 
       } else {
         filteredProducts.value = store.products.filter(
           (product) =>
@@ -52,6 +45,8 @@ export default {
       }
     };
 
+    watch([selectedCategory, selectedSubcategory], filterProducts);
+
     onMounted(fetchProducts);
 
     return {
@@ -60,12 +55,11 @@ export default {
       selectedSubcategory,
       uniqueCategories,
       filteredSubcategories,
-      filterByCategory,
-      filterBySubcategory,
     };
   },
 };
 </script>
+
 
 <template>
  
