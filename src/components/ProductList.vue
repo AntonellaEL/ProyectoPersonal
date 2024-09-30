@@ -47,6 +47,10 @@ export default {
 
     watch([selectedCategory, selectedSubcategory], filterProducts);
 
+    const loadProducts = () => {
+      fetchProducts();
+    };
+
     onMounted(fetchProducts);
 
     return {
@@ -55,24 +59,23 @@ export default {
       selectedSubcategory,
       uniqueCategories,
       filteredSubcategories,
+      loadProducts, 
     };
   },
 };
 </script>
 
-
 <template>
- 
   <div class="container mt-5">
     <h2 class="text-center mb-4">Lista de Productos</h2>
- 
+
     <div class="row mb-3">
       <div class="col-12 col-md-6">
         <label for="categorySelect">Selecciona una Categoría:</label>
         <select
           id="categorySelect"
           v-model="selectedCategory"
-          @change="filterByCategory"
+          @change="filterProducts"
           class="form-control"
         >
           <option value="">Todas las Categorías</option>
@@ -87,7 +90,7 @@ export default {
         <select
           id="subcategorySelect"
           v-model="selectedSubcategory"
-          @change="filterBySubcategory"
+          @change="filterProducts"
           class="form-control"
         >
           <option value="">Todas las Subcategorías</option>
@@ -131,11 +134,11 @@ export default {
   </div>
 </template>
 
+
 <style scoped>
 .table {
   margin-top: 20px;
 }
-
 
 .table-responsive {
   overflow-x: auto;

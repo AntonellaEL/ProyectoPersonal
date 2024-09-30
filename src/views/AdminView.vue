@@ -1,42 +1,30 @@
 <script>
-import { ref, onMounted } from 'vue';
-import ProductList from '@/components/ProductList.vue';
-import ProductFormModal from '@/components/ProductFormModal.vue'; 
-import { useProductStore } from '@/stores/productStore';
+import { ref } from 'vue';
+import ProductFormModal from '../components/ProductFormModal.vue';
+import ProductList from '../components/ProductList.vue';
 
 export default {
-  components: {
-    ProductList,
-    ProductFormModal,
-  },
+  components: { ProductFormModal, ProductList },
   setup() {
-    const store = useProductStore();
-    const productos = ref([]);
+    const productList = ref(null);
 
-    const actualizarLista = async () => {
-      await store.loadProducts(); 
-      productos.value = store.products; 
+    const handleProductAdded = () => {
+      if (productList.value) {
+        productList.value.loadProducts(); 
+      }
     };
 
-    onMounted(actualizarLista); 
-
     return {
-      productos,
-      actualizarLista,
+      handleProductAdded,
+      productList,
     };
   },
 };
 </script>
-
 <template>
   <div class="admin-view">
-    <ProductFormModal @producto-agregado="actualizarLista" /> 
-    <ProductList :productos="productos" />
+    <ProductFormModal @producto-agregado="handleProductAdded" /> 
+    <ProductList ref="productList" />
   </div>
 </template>
 
-<style scoped>
-.admin-view {
-  padding: 20px;
-}
-</style>

@@ -1,3 +1,59 @@
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      showModal: false,
+      producto: {
+        nombre: '',
+        precio: 0,
+        descripcion: '',
+        categoria: '',
+        subcategoria: '',
+        pasillo: '',
+        estanteria: '',
+        img: '',
+      },
+      mensaje: '',
+    };
+  },
+  methods: {
+    async submitForm() {
+  try {
+    const response = await axios.post('http://localhost:8080/api/v1/productos', this.producto, {
+      withCredentials: true 
+    });
+
+    this.mensaje = 'Producto guardado exitosamente!';
+    this.closeModal();
+    
+    this.$emit('producto-agregado');
+
+    this.producto = {
+      nombre: '',
+      precio: 0,
+      descripcion: '',
+      categoria: '',
+      subcategoria: '',
+      pasillo: '',
+      estanteria: '',
+      img: '',
+    };
+
+    console.log('Producto guardado:', response.data);
+  } catch (error) {
+    console.error('Error al guardar el producto:', error);
+  }
+},
+
+    closeModal() {
+      this.showModal = false;
+    },
+  },
+};
+</script>
+
 <template>
   <div>
     <button
@@ -105,67 +161,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import axios from 'axios';
-
-export default {
-  data() {
-    return {
-      showModal: false,
-      producto: {
-        nombre: '',
-        precio: 0,
-        descripcion: '',
-        categoria: '',
-        subcategoria: '',
-        pasillo: '',
-        estanteria: '',
-        img: '',
-      },
-      mensaje: '',
-    };
-  },
-  methods: {
-    async submitForm() {
-      try {
-        const response = await axios.post('http://localhost:8080/api/v1/productos', this.producto, {
-          withCredentials: true 
-        });
-
-        this.mensaje = 'Producto guardado exitosamente!';
-        this.closeModal();
-
-        
-        this.producto = {
-          nombre: '',
-          precio: 0,
-          descripcion: '',
-          categoria: '',
-          subcategoria: '',
-          pasillo: '',
-          estanteria: '',
-          img: '',
-        };
-
-        console.log('Producto guardado:', response.data);
-      } catch (error) {
-        console.error('Error al guardar el producto:', error);
-        if (error.response) {
-          console.error('Error del servidor:', error.response.data);
-          this.mensaje = `Error: ${error.response.data.message || 'Error al guardar el producto. Intenta de nuevo.'}`;
-        } else {
-          console.error('Error de configuración:', error.message);
-          this.mensaje = 'Error de configuración. Por favor, verifica tu conexión.';
-        }
-      }
-    },
-    closeModal() {
-      this.showModal = false;
-    },
-  },
-};
-</script>
 
 <style scoped>
 .modal {
