@@ -46,98 +46,108 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="searchProducts" class="search-form">
-    <input
-      type="text"
-      v-model="searchQuery"
-      class="form-control search-input"
-      placeholder="Busca tu artículo..."
-    />
-    <img 
-      src="@/components/icons/microphone.svg" 
-      alt="Micrófono" 
-      class="mic-button" 
-      @click="startVoiceRecognition"
-    />
-    <img 
-      src="@/components/icons/Search.svg" 
-      alt="Buscar" 
-      class="search-button" 
-      @click="searchProducts"
-    />
-   
-  </form>
+  <div class="search-container">
+    <div class="search-input-container">
+      <input
+        type="text"
+        v-model="searchQuery"
+        class="form-control search-input"
+        placeholder="Busca tu artículo..."
+      />
+      <img 
+        src="@/components/icons/microphone.svg" 
+        alt="Micrófono" 
+        class="mic-button" 
+        @click="startVoiceRecognition"
+      />
+      <img 
+        src="@/components/icons/Search.svg" 
+        alt="Buscar" 
+        class="search-button" 
+        @click="searchProducts"
+      />
+    </div>
+  </div>
 </template>
-
 <style scoped>
-.search-form {
+.search-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center;  
+  align-items: center;     
   width: 100%;
   margin: 20px 0;
 }
 
-::placeholder {
-  font-family: jomhuria;
-  color: black;
-  font-size: 50px;
+.search-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px; 
 }
 
 .search-input {
-  background-color: #C9C9C9;
-  width: 50%;
-  padding: 15px;
+  width: 100%;
+  background-color: #e9830f;
+  padding: 10px 50px;
   font-size: 30px;
-  border: 2px solid #ccc;
+  border: 1px solid #797878;
   outline: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-family: jomhuria;
+  border-radius: 20px; 
 }
 
-.search-button, .mic-button {
+
+.mic-button {
+  position:absolute;
+  left: 10px; 
+  top: 50%; 
+  transform: translateY(-50%);
   cursor: pointer;
-  background-color: #C9C9C9;
+  width: 40px; 
+  height: 30px;
 }
 
 .search-button {
-  width: 50px;
-  height: 62px;
+  position: absolute;
+  right: 10px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  cursor: pointer;
+  width: 50px; 
+  height: 40px;
 }
 
-.mic-button {
-  width: 50px;
-  height: 62px;
-  
+/* Placeholder */
+::placeholder {
+  font-family: jomhuria;
+  color: black;
+  font-size: 30px; 
 }
 
 @media (max-width: 768px) {
   .search-input {
-    width: 70%;
-    padding: 10px;
+    padding: 10px 40px;
     font-size: 25px;
   }
 
-  .search-button, .mic-button {
-    width: 40px;
-    height: 42px;
+  .mic-button, .search-button {
+    width: 25px;
+    height: 25px;
   }
 
   ::placeholder {
-    font-size: 30px;
+    font-size: 25px;
   }
 }
 
 @media (max-width: 480px) {
   .search-input {
-    width: 90%;
-    padding: 8px;
-    font-size: 22px;
+    padding: 8px 30px; 
+    font-size: 20px;
   }
 
-  .search-button, .mic-button {
-    width: 30px;
-    height: 34px;
+  .mic-button, .search-button {
+    width: 20px;
+    height: 20px;
   }
 
   ::placeholder {
