@@ -34,8 +34,7 @@ export default {
   .subcategory-card {
     color: black;
     font-size: 2vh;
-    border: 1px solid #ccc;
-    background-color: #f5f5f5;
+    background-color:#c47215; 
     border-radius: 8px;
     padding: 10px;
     text-align: center;

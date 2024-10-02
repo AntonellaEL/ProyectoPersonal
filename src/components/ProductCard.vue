@@ -24,11 +24,9 @@ export default {
 
 <style scoped>
 .product-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color:#c47215; 
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -45,12 +43,12 @@ export default {
 h3 {
   font-size: 20px;
   margin-bottom: 10px;
-  color: #333;
+  color: #000000;
 }
 p {
   font-size: 16px;
   margin: 4px 0;
-  color: #666;
+  color: #000000;
 }
 </style>
 
