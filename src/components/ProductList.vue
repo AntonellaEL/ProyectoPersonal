@@ -3,11 +3,13 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { useProductStore } from '@/stores/productStore';
 import Delete from '@/components/Delete.vue';
 import EditButton from '@/components/Edit.vue';
+import ImageUploadButton from '@/components/ImageUploadButton.vue'; // Importa el nuevo componente
 
 export default {
   components: {
     Delete,
     EditButton,
+    ImageUploadButton,
   },
   setup() {
     const store = useProductStore();
@@ -69,7 +71,13 @@ export default {
     const handleProductEdited = (id) => {
       mensaje.value = 'Producto editado exitosamente!';
       fetchProducts();
-      setTimeout(clearMessage, 5000); 
+      setTimeout(clearMessage, 5000);
+    };
+
+    const handleImageChanged = async () => {
+      mensaje.value = 'Imagen actualizada correctamente!';
+      await fetchProducts(); 
+      setTimeout(clearMessage, 5000);
     };
 
     return {
@@ -80,12 +88,12 @@ export default {
       filteredSubcategories,
       handleProductDeleted,
       handleProductEdited,
+      handleImageChanged,
       mensaje,
     };
   },
 };
 </script>
-
 <template>
   <div class="container mt-5">
     <h2 class="text-center mb-4">Lista de Productos</h2>
@@ -139,6 +147,7 @@ export default {
             <th>Subcategoría</th>
             <th>Pasillo</th>
             <th>Estantería</th>
+            <th>Imagen</th>
             <th>Editar</th>
             <th>Borrar</th>
           </tr>
@@ -152,6 +161,10 @@ export default {
             <td>{{ product.subcategoria }}</td>
             <td>{{ product.pasillo }}</td>
             <td>{{ product.estanteria }}</td>
+            <td>
+              <img :src="product.img" alt="Imagen del producto" width="50" height="50" />
+              <ImageUploadButton :productId="product.id" @imagen-cambiada="handleImageChanged" />
+            </td>
             <td>
               <EditButton :productId="product.id" @producto-editado="handleProductEdited" />
             </td>
