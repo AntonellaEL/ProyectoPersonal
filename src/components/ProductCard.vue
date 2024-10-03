@@ -13,42 +13,74 @@ export default {
 
 <template>
   <div class="product-card" @click="selectProduct">
-    <img :src="`/images/${producto.img}`" alt="Imagen del producto" class="product-image" />
-    <h3>{{ producto.nombre }}</h3>
-    <p>Precio: {{ producto.precio }}€</p>
-    <p>Descripción: {{ producto.descripcion }}</p>
-    <p>Pasillo: {{ producto.pasillo }}</p>
-    <p>Estanteria: {{ producto.estanteria }}</p>
+    <div class="image-container">
+      <img :src="producto.img" alt="Imagen del producto" class="product-image" />
+    </div>
+    <div class="product-details">
+      <div class="product-header">
+        <h3>{{ producto.nombre }}</h3>
+        <h3>{{ producto.precio }}€</h3>
+      </div>
+      <p class="description">{{ producto.descripcion }}</p>
+      <div class="product-location">
+        <p>CATEGORIA: {{ producto.categoria }} &nbsp;&nbsp; SUBCATEGORIA: {{ producto.subcategoria }}</p>
+        <p>PASILLO: {{ producto.pasillo }} &nbsp;&nbsp; ESTANTERIA: {{ producto.estanteria }} &nbsp;&nbsp; LADO: IZQUIERDO</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .product-card {
-  background-color:#c47215; 
-  border-radius: 8px;
-  padding: 10px;
+  background-color: #da9515;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  width: 200px; 
+  padding: 15px;
+  overflow: hidden;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  aspect-ratio: 1 / 1; 
-  overflow: hidden;
-  min-height: 200px;
 }
+
+.image-container {
+  width: 200px;
+  height: 200px;
+  background-size: cover;;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
 .product-image {
   max-width: 100%;
-  max-height: 150px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+}
+
+.product-details {
+  text-align: left;
+  font-family: jomhuria;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 35px;
+  font-weight: bold;
   margin-bottom: 10px;
 }
-h3 {
+
+.description {
+  font-size: 25px;
+  margin-bottom: 15px;
+  color: #000000;
+
+}
+
+.product-location {
   font-size: 20px;
-  margin-bottom: 10px;
   color: #000000;
-}
-p {
-  font-size: 16px;
-  margin: 4px 0;
-  color: #000000;
+  line-height: 1.6;
 }
 </style>
-
