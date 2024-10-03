@@ -10,90 +10,122 @@ export default {
     Delete,
     EditButton,
     ImageUploadButton,
-  },
-  setup() {
-    const store = useProductStore();
-    const filteredProducts = ref([]);
-    const mensaje = ref('');
-    const selectedCategory = ref('');
-    const selectedSubcategory = ref('');
+  },setup() {
+  const store = useProductStore();
+  const filteredProducts = ref([]);
+  const mensaje = ref('');
+  const selectedCategory = ref('');
+  const selectedSubcategory = ref('');
+  
+  // Paginación
+  const currentPage = ref(1);
+  const itemsPerPage = 15;
 
-    const fetchProducts = async () => {
-      await store.loadProducts();
+  const fetchProducts = async () => {
+    await store.loadProducts();
+    filteredProducts.value = store.products;
+  };
+
+  const uniqueCategories = computed(() => {
+    return [...new Set(store.products.map((product) => product.categoria))];
+  });
+
+  const filteredSubcategories = computed(() => {
+    if (!selectedCategory.value) return [];
+    return [
+      ...new Set(
+        store.products
+          .filter((product) => product.categoria === selectedCategory.value)
+          .map((product) => product.subcategoria)
+      ),
+    ];
+  });
+
+  const filterProducts = () => {
+    if (!selectedCategory.value) {
       filteredProducts.value = store.products;
-    };
+    } else if (!selectedSubcategory.value) {
+      filteredProducts.value = store.products.filter(
+        (product) => product.categoria === selectedCategory.value
+      );
+    } else {
+      filteredProducts.value = store.products.filter(
+        (product) =>
+          product.categoria === selectedCategory.value &&
+          product.subcategoria === selectedSubcategory.value
+      );
+    }
+    currentPage.value = 1; // Resetear a la primera página al filtrar
+  };
 
-    const uniqueCategories = computed(() => {
-      return [...new Set(store.products.map((product) => product.categoria))];
-    });
+  watch([selectedCategory, selectedSubcategory], filterProducts);
 
-    const filteredSubcategories = computed(() => {
-      if (!selectedCategory.value) return [];
-      return [
-        ...new Set(
-          store.products
-            .filter((product) => product.categoria === selectedCategory.value)
-            .map((product) => product.subcategoria)
-        ),
-      ];
-    });
+  onMounted(fetchProducts);
 
-    const filterProducts = () => {
-      if (!selectedCategory.value) {
-        filteredProducts.value = store.products;
-      } else if (!selectedSubcategory.value) {
-        filteredProducts.value = store.products.filter(
-          (product) => product.categoria === selectedCategory.value
-        );
-      } else {
-        filteredProducts.value = store.products.filter(
-          (product) =>
-            product.categoria === selectedCategory.value &&
-            product.subcategoria === selectedSubcategory.value
-        );
-      }
-    };
+  const clearMessage = () => {
+    mensaje.value = '';
+  };
 
-    watch([selectedCategory, selectedSubcategory], filterProducts);
+  const handleProductDeleted = (id) => {
+    filteredProducts.value = filteredProducts.value.filter(product => product.id !== id);
+    mensaje.value = 'Producto eliminado exitosamente!';
+    setTimeout(clearMessage, 5000);
+  };
 
-    onMounted(fetchProducts);
+  const handleProductEdited = (id) => {
+    mensaje.value = 'Producto editado exitosamente!';
+    fetchProducts();
+    setTimeout(clearMessage, 5000);
+  };
 
-    const clearMessage = () => {
-      mensaje.value = '';
-    };
+  const handleImageChanged = async () => {
+    mensaje.value = 'Imagen actualizada correctamente!';
+    await fetchProducts(); 
+    setTimeout(clearMessage, 5000);
+  };
 
-    const handleProductDeleted = (id) => {
-      filteredProducts.value = filteredProducts.value.filter(product => product.id !== id);
-      mensaje.value = 'Producto eliminado exitosamente!';
-      setTimeout(clearMessage, 5000);
-    };
+  // Paginación
+  const paginatedProducts = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    return filteredProducts.value.slice(start, start + itemsPerPage);
+  });
 
-    const handleProductEdited = (id) => {
-      mensaje.value = 'Producto editado exitosamente!';
-      fetchProducts();
-      setTimeout(clearMessage, 5000);
-    };
+  const totalPages = computed(() => {
+    return Math.ceil(filteredProducts.value.length / itemsPerPage);
+  });
 
-    const handleImageChanged = async () => {
-      mensaje.value = 'Imagen actualizada correctamente!';
-      await fetchProducts(); 
-      setTimeout(clearMessage, 5000);
-    };
+  const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+      currentPage.value++;
+    }
+  };
 
-    return {
-      filteredProducts,
-      selectedCategory,
-      selectedSubcategory,
-      uniqueCategories,
-      filteredSubcategories,
-      handleProductDeleted,
-      handleProductEdited,
-      handleImageChanged,
-      mensaje,
-    };
-  },
-};
+  const previousPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value--;
+    }
+  };
+
+  return {
+    filteredProducts,
+    selectedCategory,
+    selectedSubcategory,
+    uniqueCategories,
+    filteredSubcategories,
+    handleProductDeleted,
+    handleProductEdited,
+    handleImageChanged,
+    mensaje,
+    paginatedProducts, // Usaremos esto en el template
+    currentPage,
+    totalPages,
+    nextPage,
+    previousPage,
+  };
+}
+}
 </script>
+
 <template>
   <div class="container mt-5">
     <h2 class="text-center mb-4">Lista de Productos</h2>
@@ -153,7 +185,7 @@ export default {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in filteredProducts" :key="product.id" class="table-row">
+          <tr v-for="product in paginatedProducts" :key="product.id" class="table-row">
             <td>{{ product.nombre }}</td>
             <td>{{ product.precio.toFixed(2) }} €</td>
             <td>{{ product.descripcion }}</td>
@@ -175,10 +207,26 @@ export default {
         </tbody>
       </table>
     </div>
+
+    <div class="pagination-controls">
+      <button @click="previousPage" :disabled="currentPage === 1">Anterior</button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">Siguiente</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-controls button {
+  margin: 0 10px;
+}
+
 .table {
   margin-top: 20px;
 }
