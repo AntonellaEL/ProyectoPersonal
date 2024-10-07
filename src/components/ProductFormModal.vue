@@ -13,7 +13,7 @@ export default {
         subcategoria: '',
         pasillo: '',
         estanteria: '',
-        img: '',
+
       },
       mensaje: '',
     };
@@ -38,7 +38,7 @@ export default {
       subcategoria: '',
       pasillo: '',
       estanteria: '',
-      img: '',
+  
     };
 
     console.log('Producto guardado:', response.data);
@@ -139,16 +139,6 @@ export default {
                   type="text"
                   id="estanteria"
                   v-model="producto.estanteria"
-                  class="form-control"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="img" class="form-label">URL de la Imagen</label>
-                <input
-                  type="text"
-                  id="img"
-                  v-model="producto.img"
                   class="form-control"
                   required
                 />
