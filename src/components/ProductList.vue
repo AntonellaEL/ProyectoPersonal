@@ -1,9 +1,9 @@
 <script>
 import { ref, onMounted, computed, watch } from 'vue';
-import { useProductStore } from '@/stores/productStore';
+import { useProductStore } from '@/stores/useProductStore';
 import Delete from '@/components/Delete.vue';
 import EditButton from '@/components/Edit.vue';
-import ImageUploadButton from '@/components/ImageUploadButton.vue'; // Importa el nuevo componente
+import ImageUploadButton from '@/components/ImageUploadButton.vue'; 
 
 export default {
   components: {
@@ -17,7 +17,6 @@ export default {
   const selectedCategory = ref('');
   const selectedSubcategory = ref('');
   
-  // Paginación
   const currentPage = ref(1);
   const itemsPerPage = 15;
 
@@ -55,7 +54,7 @@ export default {
           product.subcategoria === selectedSubcategory.value
       );
     }
-    currentPage.value = 1; // Resetear a la primera página al filtrar
+    currentPage.value = 1; 
   };
 
   watch([selectedCategory, selectedSubcategory], filterProducts);
@@ -116,7 +115,7 @@ export default {
     handleProductEdited,
     handleImageChanged,
     mensaje,
-    paginatedProducts, // Usaremos esto en el template
+    paginatedProducts, 
     currentPage,
     totalPages,
     nextPage,

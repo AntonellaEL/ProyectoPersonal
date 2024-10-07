@@ -21,17 +21,26 @@ export const deleteProduct = async (productId) => {
   }
 };
 
-export const updateProduct = async (productId, productData) =>{
-  try{
-    await axios.put(`${API_URL}/${productId}` , productData,{
-      headers:{
+export const updateProduct = async (productId, productData) => {
+  try {
+    await axios.put(`${API_URL}/${productId}`, productData, {
+      headers: {
         'Content-Type': 'application/json',
       },
-      withCredentials:true,
+      withCredentials: true,
     });
   } catch (error) {
-      console.error('Error al actualizar el producto:', error);
-      throw error;
-    }
-  };
+    console.error('Error updating product:', error);
+    throw error;
+  }
+};
 
+export const getProductById = async (productId) => {
+  try {
+    const response = await axios.get(`${API_URL}/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product by ID:', error);
+    throw error;
+  }
+};

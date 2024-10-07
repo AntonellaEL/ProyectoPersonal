@@ -1,5 +1,5 @@
 <script>
-import { getProductById, updateProduct } from '@/services/productService';
+import { getProductById, updateProduct } from '../core/api/product/productRepository';
 
 export default {
   props: {
@@ -51,7 +51,6 @@ export default {
 };
 </script>
 
-
 <template>
   <div>
     <button class="edit-button" @click="openModal">
@@ -69,8 +68,14 @@ export default {
           </div>
           <div class="form-group">
             <label for="precio">Precio</label>
-              <input 
-              v-model="producto.precio" type="number" id="precio" required step="0.01"  min="0"/>
+            <input 
+              v-model.number="producto.precio" 
+              type="number" 
+              id="precio" 
+              required 
+              step="0.01"  
+              min="0"
+            />
           </div>
           <div class="form-group">
             <label for="descripcion">Descripción</label>
@@ -101,6 +106,8 @@ export default {
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .modal-overlay {
