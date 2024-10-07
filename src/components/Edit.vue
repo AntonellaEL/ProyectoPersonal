@@ -18,8 +18,7 @@ export default {
         categoria: '',
         subcategoria: '',
         pasillo: '',
-        estanteria: '',
-        img: '',
+        estanteria: ''
       },
     };
   },
@@ -98,11 +97,6 @@ export default {
             <label for="estanteria">Estantería</label>
             <input v-model="producto.estanteria" type="text" id="estanteria" required />
           </div>
-          <div class="form-group">
-            <label for="img">URL de la Imagen</label>
-            <input v-model="producto.img" type="text" id="img" required />
-          </div>
-
           <div class="button-group">
             <button type="submit">Guardar</button>
             <button type="button" @click="closeModal">Cancelar</button>
