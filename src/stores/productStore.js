@@ -13,8 +13,17 @@ export const useProductStore = defineStore('productStore', () => {
     }
   };
 
+  const saveProduct = async (productId, productData) => {
+    try {
+      await updateProduct(productId, productData);
+    } catch (error) {
+      console.error('Error al actualizar el producto:', error);
+    }
+  };
+
   return {
-    products,
-    loadProducts,
+    product,
+    loadProduct,
+    saveProduct,
   };
 });

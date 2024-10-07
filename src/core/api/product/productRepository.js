@@ -20,3 +20,18 @@ export const deleteProduct = async (productId) => {
     throw error;
   }
 };
+
+export const updateProduct = async (productId, productData) =>{
+  try{
+    await axios.put(`${API_URL}/${productId}` , productData,{
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      withCredentials:true,
+    });
+  } catch (error) {
+      console.error('Error al actualizar el producto:', error);
+      throw error;
+    }
+  };
+

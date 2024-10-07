@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios';
+import { getProductById, updateProduct } from '@/services/productService';
 
 export default {
   props: {
@@ -32,23 +32,17 @@ export default {
     },
     async loadProductData() {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/productos/${this.productId}`);
-        this.producto = response.data; 
+        const productData = await getProductById(this.productId);
+        this.producto = productData; 
       } catch (error) {
         console.error('Error al cargar los datos del producto:', error);
       }
     },
     async confirmEdit() {
       try {
-        await axios.put(`http://localhost:8080/api/v1/productos/${this.productId}`, this.producto, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        });
-
-        this.$emit('producto-editado', this.productId); 
-        this.closeModal(); 
+        await updateProduct(this.productId, this.producto);
+        this.$emit('producto-editado', this.productId);
+        this.closeModal();
       } catch (error) {
         console.error('Error al editar el producto:', error);
       }
@@ -56,6 +50,7 @@ export default {
   },
 };
 </script>
+
 
 <template>
   <div>
