@@ -7,7 +7,7 @@ export const useProductStore = defineStore('productStore', () => {
 
   const loadProducts = async () => {
     try {
-      products.value = await fetchProducts(); 
+      products.value = await fetchProducts();
     } catch (error) {
       console.error('Error loading products:', error);
     }
@@ -15,6 +15,6 @@ export const useProductStore = defineStore('productStore', () => {
 
   return {
     products,
-    loadProducts, 
+    loadProducts,
   };
 });

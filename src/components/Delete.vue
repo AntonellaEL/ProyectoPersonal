@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios';
+import { removeProduct } from '../core/api/product/productService';
 
 export default {
   props: {
@@ -23,12 +23,10 @@ export default {
       this.showModal = false;
     },
     async confirmDelete() {
-      this.showModal = false; 
+      this.showModal = false;
 
       try {
-        await axios.delete(`http://localhost:8080/api/v1/productos/${this.productId}`, {
-          withCredentials: true,
-        });
+        await removeProduct(this.productId);
         this.deleted = true;
         this.mensaje = 'Producto eliminado exitosamente!';
 
@@ -45,6 +43,7 @@ export default {
   },
 };
 </script>
+
 
 <template>
   <div>

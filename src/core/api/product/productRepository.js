@@ -11,3 +11,12 @@ export const getAllProducts = async () => {
     throw error;
   }
 };
+
+export const deleteProduct = async (productId) => {
+  try {
+    await axios.delete(`${API_URL}/${productId}`, { withCredentials: true });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    throw error;
+  }
+};
