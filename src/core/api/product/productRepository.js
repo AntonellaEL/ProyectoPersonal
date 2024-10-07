@@ -12,6 +12,21 @@ export const getAllProducts = async () => {
   }
 };
 
+export const postProduct = async (productData) => {
+  try {
+    const response = await axios.post(API_URL, productData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
+    return response.data; 
+  } catch (error) {
+    console.error('Error saving product:', error);
+    throw error;
+  }
+};
+
 export const deleteProduct = async (productId) => {
   try {
     await axios.delete(`${API_URL}/${productId}`, { withCredentials: true });

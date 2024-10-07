@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { fetchProducts, editProduct, fetchProductById } from '../core/api/product/productService';
+import { fetchProducts, editProduct, fetchProductById, createProduct } from '../core/api/product/productService';
 
 export const useProductStore = defineStore('productStore', () => {
   const products = ref([]);
@@ -30,10 +30,21 @@ export const useProductStore = defineStore('productStore', () => {
     }
   };
 
+  const postProduct = async (productData) => { 
+    try {
+      const product = await createProduct(productData);
+      return product;
+    } catch (error) {
+      console.error('Error saving product:', error);
+      throw error;
+    }
+  };
+
   return {
     products,
     loadProducts,
     saveProduct,
     loadProductById,
+    postProduct,
   };
 });

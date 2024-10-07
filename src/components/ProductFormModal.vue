@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios';
+import { useProductStore } from '../stores/useProductStore'; 
 
 export default {
   data() {
@@ -13,42 +13,48 @@ export default {
         subcategoria: '',
         pasillo: '',
         estanteria: '',
-
       },
       mensaje: '',
     };
   },
+  setup() {
+    const productStore = useProductStore(); 
+
+    return {
+      productStore, 
+    };
+  },
   methods: {
     async submitForm() {
-  try {
-    const response = await axios.post('http://localhost:8080/api/v1/productos', this.producto, {
-      withCredentials: true 
-    });
+      try {
+        await this.productStore.postProduct(this.producto);
+        
+        this.mensaje = 'Producto guardado exitosamente!';
+        this.closeModal();
+        
+        this.$emit('producto-agregado'); 
 
-    this.mensaje = 'Producto guardado exitosamente!';
-    this.closeModal();
-    
-    this.$emit('producto-agregado');
-
-    this.producto = {
-      nombre: '',
-      precio: 0,
-      descripcion: '',
-      categoria: '',
-      subcategoria: '',
-      pasillo: '',
-      estanteria: '',
-  
-    };
-
-    console.log('Producto guardado:', response.data);
-  } catch (error) {
-    console.error('Error al guardar el producto:', error);
-  }
-},
+        this.resetForm();
+      } catch (error) {
+        console.error('Error al guardar el producto:', error);
+        this.mensaje = 'Error al guardar el producto. Por favor, inténtelo de nuevo.';
+      }
+    },
 
     closeModal() {
       this.showModal = false;
+    },
+
+    resetForm() {
+      this.producto = {
+        nombre: '',
+        precio: 0,
+        descripcion: '',
+        categoria: '',
+        subcategoria: '',
+        pasillo: '',
+        estanteria: '',
+      };
     },
   },
 };
@@ -145,6 +151,7 @@ export default {
               </div>
               <button type="submit" class="btn btn-secondary">Guardar Producto</button>
             </form>
+            <div v-if="mensaje" class="alert alert-info mt-3">{{ mensaje }}</div> 
           </div>
         </div>
       </div>

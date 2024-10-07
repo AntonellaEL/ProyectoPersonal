@@ -1,30 +1,37 @@
 <script>
+import ProductFormModal from '@/components/ProductFormModal.vue';
+import ProductList from '@/components/ProductList.vue';
 import { ref } from 'vue';
-import ProductFormModal from '../components/ProductFormModal.vue';
-import ProductList from '../components/ProductList.vue';
 
 export default {
-  components: { ProductFormModal, ProductList },
+  components: {
+    ProductFormModal,
+    ProductList,
+  },
   setup() {
-    const productList = ref(null);
+    const productListKey = ref(0);
 
     const handleProductAdded = () => {
-      if (productList.value) {
-        productList.value.loadProducts(); 
-      }
+      productListKey.value++;
     };
 
     return {
       handleProductAdded,
-      productList,
+      productListKey,
     };
   },
 };
 </script>
+
 <template>
-  <div class="admin-view">
-    <ProductFormModal @producto-agregado="handleProductAdded" /> 
-    <ProductList ref="productList" />
+  <div>
+    <ProductFormModal @producto-agregado="handleProductAdded" />
+    <ProductList :key="productListKey" />
   </div>
 </template>
 
+<style scoped>
+.admin-view {
+  padding: 20px; 
+}
+</style>
